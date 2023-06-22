@@ -1,2 +1,17 @@
-- name: Code Climate Coverage Action
-  uses: paambaati/codeclimate-action@v4.0.0
+name: codeclimate
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Code Climate Coverage Action
+        uses: paambaati/codeclimate-action@v4.0.0
