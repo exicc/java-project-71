@@ -3,7 +3,7 @@ name: codeclimate-coverage
 on:
   push:
     branches:
-      - master
+      - '**'
     tags:
       - '**'
 
