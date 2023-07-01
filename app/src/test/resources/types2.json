@@ -1,0 +1,5 @@
+{
+  "booleanField": false,
+  "numberField": 43,
+  "stringField": "Hello, Hexlet!"
+}

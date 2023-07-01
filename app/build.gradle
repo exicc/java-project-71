@@ -1,9 +1,9 @@
 plugins {
     id 'application'
     id 'checkstyle'
-    id 'com.adarshr.test-logger' version '3.1.0'
+    id 'com.adarshr.test-logger' version '3.0.0'
     id 'se.patrikerdes.use-latest-versions' version '0.2.18'
-    id 'com.github.ben-manes.versions' version '0.42.0'
+    id 'com.github.ben-manes.versions' version '0.39.0'
     id 'io.freefair.lombok' version '6.4.1'
     id 'jacoco'
     id "net.ltgt.errorprone" version "3.1.0"
