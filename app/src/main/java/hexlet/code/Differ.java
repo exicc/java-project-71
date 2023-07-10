@@ -1,67 +1,65 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 public class Differ {
-    public static void generate(String filePath1, String filePath2) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
 
-        JsonNode data1 = mapper.readTree(new File(filePath1));
-        JsonNode data2 = mapper.readTree(new File(filePath2));
+    public static String generate(File file1, File file2) throws IOException {
+        JsonNode json1 = Parser.parseFile(file1);
+        JsonNode json2 = Parser.parseFile(file2);
 
-        String result = compareJsonNodes(data1, data2);
-        System.out.println(result);
+        Map<String, Object> diff = generateDiff(json1, json2);
+
+        return generateDiffString(diff);
     }
 
-    public static String compareJsonNodes(JsonNode node1, JsonNode node2) {
-        Iterator<String> fieldNames = node1.fieldNames();
-        List<JsonField> fields = new ArrayList<>();
+    private static Map<String, Object> generateDiff(JsonNode json1, JsonNode json2) {
+        Set<String> allKeys = new TreeSet<>();
+        json1.fieldNames().forEachRemaining(allKeys::add);
+        json2.fieldNames().forEachRemaining(allKeys::add);
 
-        while (fieldNames.hasNext()) {
-            String fieldName = fieldNames.next();
-            JsonNode value1 = node1.get(fieldName);
-            JsonNode value2 = node2.get(fieldName);
+        Map<String, Object> diff = new LinkedHashMap<>();
 
-            fields.add(new JsonField(fieldName, value1, value2));
-        }
+        allKeys.forEach(key -> {
+            JsonNode value1 = json1.get(key);
+            JsonNode value2 = json2.get(key);
 
-        fieldNames = node2.fieldNames();
-
-        while (fieldNames.hasNext()) {
-            String fieldName = fieldNames.next();
-            JsonNode value1 = node1.get(fieldName);
-            JsonNode value2 = node2.get(fieldName);
-
-            if (value1 == null) {
-                fields.add(new JsonField(fieldName, null, value2));
+            if (value1 != null && value2 != null) {
+                if (!value1.equals(value2)) {
+                    diff.put("  - " + key, value1);
+                    diff.put("  + " + key, value2);
+                } else {
+                    diff.put("  " + key, value1);
+                }
+            } else if (value1 != null) {
+                diff.put("  - " + key, value1);
+            } else if (value2 != null) {
+                diff.put("  + " + key, value2);
             }
+        });
+
+        return diff;
+    }
+
+    private static String generateDiffString(Map<String, Object> diff) {
+        StringBuilder diffString = new StringBuilder();
+
+        for (Map.Entry<String, Object> entry : diff.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            String valueString = value.toString().replaceAll("\"", "");
+            diffString.append(key).append(": ").append(valueString).append("\n");
         }
 
-        Collections.sort(fields);
-
-        StringBuilder result = new StringBuilder();
-        for (JsonField field : fields) {
-            String fieldName = field.getFieldName();
-            JsonNode value1 = field.getValue1();
-            JsonNode value2 = field.getValue2();
-
-            if (value2 == null) {
-                result.append("    - ").append(fieldName).append(": ").append(value1).append("\n");
-            } else if (value1 != null && !value1.equals(value2)) {
-                result.append("    - ").append(fieldName).append(": ").append(value1).append("\n");
-                result.append("    + ").append(fieldName).append(": ").append(value2).append("\n");
-            } else {
-                result.append("    ").append(fieldName).append(": ").append(value1).append("\n");
-            }
-        }
-
-        return "{\n" + result + "}";
+        return "{\n" + diffString + "}";
     }
 }

@@ -5,14 +5,19 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.io.File;
+import java.io.IOException;
+
+import static hexlet.code.Differ.generate;
+
 @Command(name = "gendiff", description = "Compares two configuration files and shows a difference.")
 
 public class App implements Runnable {
 
     @Parameters(index = "0", description = "Path to first file")
-    private String filePath1;
+    private File filePath1;
     @Parameters(index = "1", description = "Path to second file")
-    private String filePath2;
+    private File filePath2;
 
     @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
     private String format;
@@ -35,9 +40,12 @@ public class App implements Runnable {
             System.out.println("Version 1.0.0");
         } else {
             try {
-                Differ.generate(filePath1, filePath2);
+                String diffString = generate(filePath1, filePath2);
+                System.out.println(diffString);
+            } catch (IOException e) {
+                System.out.println("Ошибка чтения файла: " + e.getMessage());
             } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
+                System.out.println("Ошибка при сравнении файлов: " + e.getMessage());
             }
         }
     }
