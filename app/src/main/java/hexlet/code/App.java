@@ -19,13 +19,12 @@ public class App implements Runnable {
     @Parameters(index = "1", description = "Path to second file")
     private File filePath2;
 
-    @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
-    private String format;
+//    @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
+//    private String format;
     @Option(names = {"-h", "--help"}, description = "Show this help message and exit.", help = true)
     private boolean helpRequested;
     @Option(names = {"-V", "--version"}, description = "Print version information and exit.", versionHelp = true)
     private boolean versionRequested;
-
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new App()).execute(args);
@@ -43,9 +42,9 @@ public class App implements Runnable {
                 String diffString = generate(filePath1, filePath2);
                 System.out.println(diffString);
             } catch (IOException e) {
-                System.out.println("Ошибка чтения файла: " + e.getMessage());
+                System.out.println("Can't read file: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Ошибка при сравнении файлов: " + e.getMessage());
+                System.out.println("Comparison error: " + e.getMessage());
             }
         }
     }
