@@ -1,32 +1,45 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import hexlet.code.formatters.Plain;
+import hexlet.code.formatters.Stylish;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 
 public class Differ {
 
-    public static String generate(File file1, File file2) throws IOException {
+    public static String generate(File file1, File file2, String formatName)
+            throws IOException, IllegalAccessException {
         JsonNode json1 = Parser.parseFile(file1);
         JsonNode json2 = Parser.parseFile(file2);
 
-        Map<String, Object> diff = generateDiff(json1, json2);
-
-        return generateDiffString(diff);
+        List<ComparisonResult> diff = generateDiffList(json1, json2);
+        return getFormattedList(formatName, diff);
     }
 
-    private static Map<String, Object> generateDiff(JsonNode json1, JsonNode json2) {
+    private static String getFormattedList(String formatName, List<ComparisonResult> diff)
+            throws IllegalAccessException {
+        if (formatName.equalsIgnoreCase("stylish")) {
+            return Stylish.format(Utils.listSortingByKey(diff));
+        } else if (formatName.equalsIgnoreCase("plain")) {
+            return Plain.format(Utils.listSortingByKey(diff));
+        } else {
+            throw new IllegalAccessException("Unsupported format: " + formatName);
+        }
+    }
+
+    private static List<ComparisonResult> generateDiffList(JsonNode json1, JsonNode json2) {
         Set<String> allKeys = new TreeSet<>();
         json1.fieldNames().forEachRemaining(allKeys::add);
         json2.fieldNames().forEachRemaining(allKeys::add);
 
-        Map<String, Object> diff = new LinkedHashMap<>();
+        List<ComparisonResult> diff = new ArrayList<>();
 
         allKeys.forEach(key -> {
             JsonNode value1 = json1.get(key);
@@ -34,32 +47,17 @@ public class Differ {
 
             if (value1 != null && value2 != null) {
                 if (!value1.equals(value2)) {
-                    diff.put("  - " + key, value1);
-                    diff.put("  + " + key, value2);
+                    diff.add(new ComparisonResult(key, value1, value2, "-+"));
                 } else {
-                    diff.put("  " + key, value1);
+                    diff.add(new ComparisonResult(key, value1, null, " "));
                 }
             } else if (value1 != null) {
-                diff.put("  - " + key, value1);
+                diff.add(new ComparisonResult(key, value1, null,  "-"));
             } else if (value2 != null) {
-                diff.put("  + " + key, value2);
+                diff.add(new ComparisonResult(key, value2, null, "+"));
             }
         });
 
         return diff;
-    }
-
-    private static String generateDiffString(Map<String, Object> diff) {
-        StringBuilder diffString = new StringBuilder();
-
-        for (Map.Entry<String, Object> entry : diff.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-
-            String valueString = value.toString().replaceAll("\"", "");
-            diffString.append(key).append(": ").append(valueString).append("\n");
-        }
-
-        return "{\n" + diffString + "}";
     }
 }

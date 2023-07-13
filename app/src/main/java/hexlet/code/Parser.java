@@ -15,8 +15,10 @@ public class Parser {
         String fileName = file.getName();
         if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
             return parseYaml(file);
-        } else {
+        } else if (fileName.endsWith(".json")) {
             return parseJson(file);
+        } else {
+            throw new IOException();
         }
     }
 

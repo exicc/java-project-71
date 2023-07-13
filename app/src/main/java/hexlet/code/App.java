@@ -19,8 +19,8 @@ public class App implements Runnable {
     @Parameters(index = "1", description = "Path to second file")
     private File filePath2;
 
-//    @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
-//    private String format;
+    @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
+    private String formatName;
     @Option(names = {"-h", "--help"}, description = "Show this help message and exit.", help = true)
     private boolean helpRequested;
     @Option(names = {"-V", "--version"}, description = "Print version information and exit.", versionHelp = true)
@@ -39,7 +39,7 @@ public class App implements Runnable {
             System.out.println("Version 1.0.0");
         } else {
             try {
-                String diffString = generate(filePath1, filePath2);
+                String diffString = generate(filePath1, filePath2, formatName);
                 System.out.println(diffString);
             } catch (IOException e) {
                 System.out.println("Can't read file: " + e.getMessage());

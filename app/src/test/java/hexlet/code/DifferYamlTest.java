@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class DifferYamlTest {
+
+    String format = "stylish";
     @Test
-    void testIdenticalFiles() throws IOException {
+    void testIdenticalFiles() throws IOException, IllegalAccessException {
         File file1 = createTempFile("file1.yml", """
                 host: hexlet.io
                 timeout: 50
@@ -24,18 +26,18 @@ public class DifferYamlTest {
 
         String expectedDiff = """
                 {
-                  follow: false
-                  host: hexlet.io
-                  proxy: 123.234.53.22
-                  timeout: 50
+                    follow: false
+                    host: hexlet.io
+                    proxy: 123.234.53.22
+                    timeout: 50
                 }""";
-        String actualDiff = Differ.generate(file1, file2);
+        String actualDiff = Differ.generate(file1, file2, format);
 
         Assertions.assertEquals(expectedDiff, actualDiff);
     }
 
     @Test
-    void testDifferentValues() throws IOException {
+    void testDifferentValues() throws IOException, IllegalAccessException {
         File file1 = createTempFile("file1.yml", """
                 host: hexlet.io
                 timeout: 50
@@ -51,19 +53,19 @@ public class DifferYamlTest {
         String expectedDiff = """
                 {
                   - follow: false
-                  host: hexlet.io
+                    host: hexlet.io
                   - proxy: 123.234.53.22
                   - timeout: 50
                   + timeout: 20
                   + verbose: true
                 }""";
-        String actualDiff = Differ.generate(file1, file2);
+        String actualDiff = Differ.generate(file1, file2, format);
 
         Assertions.assertEquals(expectedDiff, actualDiff);
     }
 
     @Test
-    void testRemovedKey() throws IOException {
+    void testRemovedKey() throws IOException, IllegalAccessException {
         File file1 = createTempFile("file1.yml", """
                 host: hexlet.io
                 timeout: 50
@@ -78,18 +80,18 @@ public class DifferYamlTest {
 
         String expectedDiff = """
                 {
-                  follow: false
-                  host: hexlet.io
+                    follow: false
+                    host: hexlet.io
                   - proxy: 123.234.53.22
-                  timeout: 50
+                    timeout: 50
                 }""";
-        String actualDiff = Differ.generate(file1, file2);
+        String actualDiff = Differ.generate(file1, file2, format);
 
         Assertions.assertEquals(expectedDiff, actualDiff);
     }
 
     @Test
-    void testAddedKey() throws IOException {
+    void testAddedKey() throws IOException, IllegalAccessException {
         File file1 = createTempFile("file1.yml", """
                 host: hexlet.io
                 timeout: 50
@@ -104,18 +106,18 @@ public class DifferYamlTest {
 
         String expectedDiff = """
                 {
-                  follow: false
-                  host: hexlet.io
+                    follow: false
+                    host: hexlet.io
                   + proxy: 123.234.53.22
-                  timeout: 50
+                    timeout: 50
                 }""";
-        String actualDiff = Differ.generate(file1, file2);
+        String actualDiff = Differ.generate(file1, file2, format);
 
         Assertions.assertEquals(expectedDiff, actualDiff);
     }
 
     @Test
-    void testKeysInAlphabeticalOrder() throws IOException {
+    void testKeysInAlphabeticalOrder() throws IOException, IllegalAccessException {
         File file1 = createTempFile("file1.yml", """
                 c: 1
                 a: 2
@@ -129,11 +131,11 @@ public class DifferYamlTest {
 
         String expectedDiff = """
                 {
-                  a: 2
-                  b: 3
-                  c: 1
+                    a: 2
+                    b: 3
+                    c: 1
                 }""";
-        String actualDiff = Differ.generate(file1, file2);
+        String actualDiff = Differ.generate(file1, file2, format);
 
         Assertions.assertEquals(expectedDiff, actualDiff);
     }
