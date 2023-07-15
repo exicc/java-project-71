@@ -25,7 +25,7 @@ public class Plain {
 
             switch (changeType) {
                 case "-+" -> stringBuilder.append(property)
-                        .append(key)
+                        .append(addQuotes(key))
                         .append(updated)
                         .append("From ")
                         .append(getObjectValue(oldValue))
@@ -33,12 +33,12 @@ public class Plain {
                         .append(getObjectValue(newValue))
                         .append("\n");
                 case "+" -> stringBuilder.append(property)
-                        .append(key)
+                        .append(addQuotes(key))
                         .append(added)
                         .append(getObjectValue(oldValue))
                         .append("\n");
                 case "-" -> stringBuilder.append(property)
-                        .append(key)
+                        .append(addQuotes(key))
                         .append(removed)
                         .append("\n");
                 case " " -> {
@@ -56,5 +56,8 @@ public class Plain {
         } else {
             return value.toString().replaceAll("\"", "'");
         }
+    }
+    private static String addQuotes(Object value) {
+        return "'" + value + "'";
     }
 }

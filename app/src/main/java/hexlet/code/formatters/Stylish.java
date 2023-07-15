@@ -51,6 +51,6 @@ public class Stylish {
 
     private static String replaceQuotes(Object value) {
 
-        return value.toString().replaceAll("[\"']", "");
+        return value.toString().replaceAll("[\"']", "").replaceAll(",", ", ");
     }
 }
