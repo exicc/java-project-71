@@ -38,17 +38,17 @@ public class DifferJsonTest {
 
         String expectedDiff = """
                 {
-                    chars1: [a,b,c]
-                  - chars2: [d,e,f]
+                    chars1: [a, b, c]
+                  - chars2: [d, e, f]
                   + chars2: false
                   - default: null
-                  + default: [value1,value2]
-                    numbers1: [1,2,3,4]
-                  - numbers2: [2,3,4,5]
-                  + numbers2: [22,33,44,55]
-                  - numbers3: [3,4,5]
-                  + numbers4: [4,5,6]
-                  + obj1: {nestedKey:value,isNested:true}
+                  + default: [value1, value2]
+                    numbers1: [1, 2, 3, 4]
+                  - numbers2: [2, 3, 4, 5]
+                  + numbers2: [22, 33, 44, 55]
+                  - numbers3: [3, 4, 5]
+                  + numbers4: [4, 5, 6]
+                  + obj1: {nestedKey:value, isNested:true}
                 }""";
         String actualDiff = Differ.generate(file1, file2, format);
 
