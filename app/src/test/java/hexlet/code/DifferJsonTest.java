@@ -20,7 +20,6 @@ public class DifferJsonTest {
         String filePath1 = "src/test/resources/complex1.json";
         String filePath2 = "src/test/resources/complex2.json";
 
-        // Создаем объект File
         File file1 = new File(filePath1);
         File file2 = new File(filePath2);
 
