@@ -10,7 +10,7 @@ public class DifferJsonTest {
 
     String format = "stylish";
     @Test
-    void testIdenticalFiles() throws IOException, IllegalAccessException {
+    void testJsonFormatter() throws IOException, IllegalAccessException {
         File file1 = createTempFile("""
                 {
                   "numbers1": [1, 2, 3, 4],
