@@ -4,7 +4,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d8225adf066eda7c321a/test_coverage)](https://codeclimate.com/github/exicc/java-project-71/test_coverage)
 
 ## This is a simple project for comparing JSON and YAML files (like Jsondiff)
-#
+
 ### How the program works:
 [![asciicast](https://asciinema.org/a/NPKtabY8O7Y64iPShmLmLaIyp.svg)](https://asciinema.org/a/NPKtabY8O7Y64iPShmLmLaIyp)
 
