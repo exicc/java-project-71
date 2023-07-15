@@ -1,6 +1,7 @@
 package hexlet.code;
 
 public class ComparisonResult {
+
     private final String key;
     private final Object oldValue;
     private final Object newValue;

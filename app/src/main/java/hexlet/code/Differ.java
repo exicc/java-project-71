@@ -1,6 +1,8 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import hexlet.code.formatters.Json;
 import hexlet.code.formatters.Plain;
 import hexlet.code.formatters.Stylish;
 
@@ -24,11 +26,19 @@ public class Differ {
     }
 
     private static String getFormattedList(String formatName, List<ComparisonResult> diff)
-            throws IllegalAccessException {
+            throws IllegalAccessException, JsonProcessingException {
+        return getFormat(formatName, diff);
+    }
+
+    private static String getFormat(String formatName, List<ComparisonResult> diff)
+            throws IllegalAccessException, JsonProcessingException {
+
         if (formatName.equalsIgnoreCase("stylish")) {
             return Stylish.format(Utils.listSortingByKey(diff));
         } else if (formatName.equalsIgnoreCase("plain")) {
             return Plain.format(Utils.listSortingByKey(diff));
+        } else if (formatName.equalsIgnoreCase("json")) {
+            return Json.format(Utils.listSortingByKey(diff));
         } else {
             throw new IllegalAccessException("Unsupported format: " + formatName);
         }
