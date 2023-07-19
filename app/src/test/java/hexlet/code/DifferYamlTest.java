@@ -51,6 +51,28 @@ public class DifferYamlTest {
     }
 
     @Test
+    void testYamlDefault() throws Exception {
+
+        String expectedDiff = resultStylish;
+        String actualDiff = Differ.generate(DEFAULT_PATH
+                + "complex1.yml", DEFAULT_PATH
+                + "complex2.yml");
+
+        Assertions.assertEquals(expectedDiff, actualDiff);
+    }
+
+    @Test
+    void testYamlExpansion() throws Exception {
+
+        String expectedDiff = resultStylish;
+        String actualDiff = Differ.generate(DEFAULT_PATH
+                + "complex1.yaml", DEFAULT_PATH
+                + "complex2.yaml", STYLISH_FORMAT);
+
+        Assertions.assertEquals(expectedDiff, actualDiff);
+    }
+
+    @Test
     void testWrongFormatName() {
         String expectedErrorMessage = "Unsupported format: formatName";
 

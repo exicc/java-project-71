@@ -19,7 +19,7 @@ public class App implements Runnable {
     private String filePath2;
 
     @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
-    private String formatName;
+    private  String formatName;
     @Option(names = {"-h", "--help"}, description = "Show this help message and exit.", help = true)
     private boolean helpRequested;
     @Option(names = {"-V", "--version"}, description = "Print version information and exit.", versionHelp = true)

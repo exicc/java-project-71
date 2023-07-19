@@ -26,6 +26,10 @@ public class Differ {
         List<Map<String, Object>> diff = Generator.generateDiffList(json1, json2);
         return Formatter.chooseFormatter(formatName, diff);
     }
+    public static String generate(String filePath1, String filePath2) throws Exception {
+        String defaultFormatName = "stylish";
+        return generate(filePath1, filePath2, defaultFormatName);
+    }
 
     private static Map<String, Object> parseFile(String filePath, String content) throws Exception {
 

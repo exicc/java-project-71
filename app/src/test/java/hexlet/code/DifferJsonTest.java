@@ -51,6 +51,17 @@ public class DifferJsonTest {
     }
 
     @Test
+    void testJsonDefault() throws Exception {
+
+        String expectedDiff = resultStylish;
+        String actualDiff = Differ.generate(DEFAULT_PATH
+                + "complex1.json", DEFAULT_PATH
+                + "complex2.json");
+
+        Assertions.assertEquals(expectedDiff, actualDiff);
+    }
+
+    @Test
     void testWrongFormatName() {
         String expectedErrorMessage = "Unsupported format: formatName";
 
