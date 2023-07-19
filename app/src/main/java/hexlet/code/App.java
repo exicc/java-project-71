@@ -5,7 +5,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-import java.io.File;
 import java.io.IOException;
 
 import static hexlet.code.Differ.generate;
@@ -15,9 +14,9 @@ import static hexlet.code.Differ.generate;
 public class App implements Runnable {
 
     @Parameters(index = "0", description = "Path to first file")
-    private File filePath1;
+    private String filePath1;
     @Parameters(index = "1", description = "Path to second file")
-    private File filePath2;
+    private String filePath2;
 
     @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
     private String formatName;
@@ -33,19 +32,14 @@ public class App implements Runnable {
 
     @Override
     public void run() {
-        if (helpRequested) {
-            CommandLine.usage(this, System.out);
-        } else if (versionRequested) {
-            System.out.println("Version 1.0.0");
-        } else {
-            try {
-                String diffString = generate(filePath1, filePath2, formatName);
-                System.out.println(diffString);
-            } catch (IOException e) {
-                System.out.println("Can't read file: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Comparison error: " + e.getMessage());
-            }
+
+        try {
+            String diffString = generate(filePath1, filePath2, formatName);
+            System.out.println(diffString);
+        } catch (IOException e) {
+            System.out.println("Can't read file: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Comparison error: " + e.getMessage());
         }
     }
 }

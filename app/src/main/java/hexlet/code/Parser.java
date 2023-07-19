@@ -1,34 +1,31 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.util.Map;
 
 public class Parser {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    static JsonNode parseFile(File file) throws IOException {
-        String fileName = file.getName();
-        if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
-            return parseYaml(file);
-        } else if (fileName.endsWith(".json")) {
-            return parseJson(file);
-        } else {
-            throw new IOException();
-        }
+    public static Map<String, Object> parseJson(String content) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(content, new ObjectMapper()
+                .getTypeFactory()
+                .constructMapType(Map.class, String.class, Object.class));
     }
 
-    static JsonNode parseJson(File file) throws IOException {
-        return OBJECT_MAPPER.readTree(file);
+    public static Map<String, Object> parseYaml(String content) throws Exception {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        return mapper.readValue(content, new ObjectMapper()
+                .getTypeFactory()
+                .constructMapType(Map.class, String.class, Object.class));
     }
 
-    static JsonNode parseYaml(File file) throws IOException {
-        YAMLFactory yamlFactory = new YAMLFactory();
-        YAMLParser yamlParser = yamlFactory.createParser(file);
-        return OBJECT_MAPPER.readTree(yamlParser);
+    public static String readFileContent(String filePath) throws IOException {
+        return Files.readString(Path.of(filePath));
     }
+
 }
