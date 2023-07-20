@@ -1,15 +1,9 @@
 package hexlet.code;
 
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
-public class Generator {
-    static final String CHANGED = "CHANGED";
+public class Generator { static final String CHANGED = "CHANGED";
     static final String UNCHANGED = "UNCHANGED";
     static final String REMOVED = "DELETED";
     static final String ADDED = "ADDED";
@@ -22,16 +16,17 @@ public class Generator {
         allKeys.addAll(map2.keySet());
 
         allKeys.forEach(key -> {
-            Object value1 = map1.get(key);
-            Object value2 = map2.get(key);
+            Object oldValue = map1.get(key);
+            Object newValue = map2.get(key);
 
-            if (value1 != null && value2 != null) {
-                diffList.add(value1.equals(value2) ? Map.of(UNCHANGED, new ComparisonResult(key, value1, null))
-                        : Map.of(CHANGED, new ComparisonResult(key, value1, value2)));
-            } else if (value1 != null) {
-                diffList.add(Map.of(REMOVED, new ComparisonResult(key, value1, null)));
-            } else if (value2 != null) {
-                diffList.add(Map.of(ADDED, new ComparisonResult(key, value2, null)));
+            if (!map1.containsKey(key)) {
+                diffList.add(Map.of(ADDED, new ComparisonResult(key, newValue, null)));
+            } else if (!map2.containsKey(key)) {
+                diffList.add(Map.of(REMOVED, new ComparisonResult(key, oldValue, null)));
+            } else if (Objects.equals(map1.get(key), map2.get(key))) {
+                diffList.add(Map.of(UNCHANGED, new ComparisonResult(key, oldValue, null)));
+            } else if (!Objects.equals(map1.get(key), map2.get(key))) {
+                diffList.add(Map.of(CHANGED, new ComparisonResult(key, oldValue, newValue)));
             }
         });
 

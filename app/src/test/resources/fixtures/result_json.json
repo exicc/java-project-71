@@ -16,12 +16,12 @@
     "newValue" : true
   }
 }, {
-  "ADDED" : {
+  "CHANGED" : {
     "key" : "default",
-    "oldValue" : [ "value1", "value2" ]
+    "newValue" : [ "value1", "value2" ]
   }
 }, {
-  "DELETED" : {
+  "CHANGED" : {
     "key" : "id",
     "oldValue" : 45
   }

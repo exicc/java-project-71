@@ -45,7 +45,7 @@ public class Stylish {
                 case ADDED -> stringBuilder.append(plus)
                         .append(key)
                         .append(": ")
-                        .append(oldValue)
+                        .append(replaceQuotes(oldValue))
                         .append("\n");
                 case REMOVED -> stringBuilder.append(minus)
                         .append(key)

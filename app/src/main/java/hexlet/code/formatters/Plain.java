@@ -2,7 +2,6 @@ package hexlet.code.formatters;
 
 import hexlet.code.ComparisonResult;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -38,14 +37,14 @@ public class Plain {
                         .append(addQuotes(key))
                         .append(wasUpdated)
                         .append("From ")
-                        .append(getObjectValue(oldValue))
+                        .append(setComplexValue(oldValue))
                         .append(" to ")
-                        .append(getObjectValue(newValue))
+                        .append(setComplexValue(newValue))
                         .append("\n");
                 case ADDED -> stringBuilder.append(property)
                         .append(addQuotes(key))
                         .append(wasAdded)
-                        .append(getObjectValue(oldValue))
+                        .append(setComplexValue(oldValue))
                         .append("\n");
                 case REMOVED -> stringBuilder.append(property)
                         .append(addQuotes(key))
@@ -61,16 +60,22 @@ public class Plain {
         return stringBuilder.toString().trim();
     }
 
-    private static String getObjectValue(Object value) {
-        if (value instanceof Arrays) {
-            return "[complex value]";
-        } else if (value != null) {
-            return value.toString().replaceAll("\"", "'");
+    private static Object setComplexValue(Object value) {
+        if (value == null) {
+            return value;
+        } else {
+            if (!(value instanceof Integer || value instanceof Boolean || value instanceof String)) {
+                return "[complex value]";
+            } else {
+                return addQuotes(value);
+            }
         }
-        return "Error here";
     }
 
-    private static String addQuotes(Object value) {
-        return "'" + value + "'";
+    private static Object addQuotes(Object value) {
+        if (value instanceof String) {
+            return "'" + value + "'";
+        }
+        return value;
     }
 }
