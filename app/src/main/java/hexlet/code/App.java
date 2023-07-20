@@ -31,7 +31,7 @@ public class App implements Runnable {
     }
 
     @Override
-    public void run() {
+    public final void run() {
 
         try {
             String diffString = generate(filePath1, filePath2, formatName);
