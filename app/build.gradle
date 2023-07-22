@@ -38,7 +38,7 @@ dependencies {
             'org.assertj:assertj-core:3.22.0'
     )
 
-    errorprone 'com.google.errorprone:error_prone_core:2.11.0'
+    errorprone 'com.google.errorprone:error_prone_core:2.20.0'
 }
 
 test {

@@ -21,41 +21,47 @@ public class Plain {
         String wasAdded = " was added with value: ";
 
 
-        diff.forEach(map -> map.forEach((changeType, comparisonResultObj) -> {
-            if (!(comparisonResultObj instanceof ComparisonResult comparisonResult)) {
-                throw new IllegalArgumentException("Invalid value type in the Map. Expected ComparisonResult.");
-            }
+        for (Map<String, Object> map : diff) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
 
-            String key = comparisonResult.getKey();
-            Object oldValue = comparisonResult.getOldValue();
-            Object newValue = comparisonResult.getNewValue() != null
-                    ? comparisonResult.getNewValue()
-                    : null;
+                String changeType = entry.getKey();
+                Object comparisonResultObj = entry.getValue();
 
-            switch (changeType) {
-                case CHANGED -> stringBuilder.append(property)
-                        .append(addQuotes(key))
-                        .append(wasUpdated)
-                        .append("From ")
-                        .append(setComplexValue(oldValue))
-                        .append(" to ")
-                        .append(setComplexValue(newValue))
-                        .append("\n");
-                case ADDED -> stringBuilder.append(property)
-                        .append(addQuotes(key))
-                        .append(wasAdded)
-                        .append(setComplexValue(oldValue))
-                        .append("\n");
-                case REMOVED -> stringBuilder.append(property)
-                        .append(addQuotes(key))
-                        .append(wasRemoved)
-                        .append("\n");
-                case UNCHANGED -> {
+                if (!(comparisonResultObj instanceof ComparisonResult comparisonResult)) {
+                    throw new IllegalArgumentException("Invalid value type in the Map. Expected ComparisonResult.");
                 }
-                default -> throw new IllegalArgumentException("Invalid change type: "
-                        + changeType);
+
+                String key = comparisonResult.getKey();
+                Object oldValue = comparisonResult.getOldValue();
+                Object newValue = comparisonResult.getNewValue() != null
+                        ? comparisonResult.getNewValue()
+                        : null;
+
+                switch (changeType) {
+                    case CHANGED -> stringBuilder.append(property)
+                            .append(addQuotes(key))
+                            .append(wasUpdated)
+                            .append("From ")
+                            .append(setComplexValue(oldValue))
+                            .append(" to ")
+                            .append(setComplexValue(newValue))
+                            .append("\n");
+                    case ADDED -> stringBuilder.append(property)
+                            .append(addQuotes(key))
+                            .append(wasAdded)
+                            .append(setComplexValue(oldValue))
+                            .append("\n");
+                    case REMOVED -> stringBuilder.append(property)
+                            .append(addQuotes(key))
+                            .append(wasRemoved)
+                            .append("\n");
+                    case UNCHANGED -> {
+                    }
+                    default -> throw new IllegalArgumentException("Invalid change type: "
+                            + changeType);
+                }
             }
-        }));
+        }
 
         return stringBuilder.toString().trim();
     }
@@ -63,12 +69,11 @@ public class Plain {
     private static Object setComplexValue(Object value) {
         if (value == null) {
             return value;
+        }
+        if (!(value instanceof Integer || value instanceof Boolean || value instanceof String)) {
+            return "[complex value]";
         } else {
-            if (!(value instanceof Integer || value instanceof Boolean || value instanceof String)) {
-                return "[complex value]";
-            } else {
-                return addQuotes(value);
-            }
+            return addQuotes(value);
         }
     }
 

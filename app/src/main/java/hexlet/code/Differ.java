@@ -3,27 +3,33 @@ package hexlet.code;
 import hexlet.code.formatters.Formatter;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
 
 public class Differ {
 
-    public static String generate(String filePath1, String filePath2, String formatName)
-            throws Exception {
-        String content1;
-        String content2;
-        try {
-            content1 = Parser.readFileContent(filePath1);
-            content2 = Parser.readFileContent(filePath2);
-        } catch (IOException e) {
-            throw new IOException("Cant read file: " + e.getMessage());
+    public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
+
+        String contentType1 = getFileType(filePath1);
+        String contentType2 = getFileType(filePath2);
+
+        String content1 = readContent(filePath1);
+        String content2 = readContent(filePath2);
+
+        Map<String, Object> contentMap1;
+        Map<String, Object> contentMap2;
+
+        if (contentType1.equals(contentType2)) {
+            contentMap1 = Parser.parseFile(content1, contentType1);
+            contentMap2 = Parser.parseFile(content2, contentType2);
+        } else {
+            throw new Exception("Comparison with different file extentions");
         }
 
-        Map<String, Object> json1 = parseFile(filePath1, content1);
-        Map<String, Object> json2 = parseFile(filePath2, content2);
-
-        List<Map<String, Object>> diff = Generator.generateDiffList(json1, json2);
+        List<Map<String, Object>> diff = Generator.generateDiffList(contentMap1, contentMap2);
         return Formatter.chooseFormatter(formatName, diff);
     }
     public static String generate(String filePath1, String filePath2) throws Exception {
@@ -31,16 +37,17 @@ public class Differ {
         return generate(filePath1, filePath2, defaultFormatName);
     }
 
-    private static Map<String, Object> parseFile(String filePath, String content) throws Exception {
-
-
+    private static String getFileType(String filePath) throws Exception {
         if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
-            return Parser.parseYaml(content);
+            return "yml";
         }
         if (filePath.endsWith(".json")) {
-            return Parser.parseJson(content);
-        } else {
-            throw new IllegalArgumentException("Неподдерживаемый формат файла");
+            return "json";
         }
+        throw new Exception("Unsupported file format");
+    }
+
+    private static String readContent(String filePath) throws IOException {
+        return Files.readString(Path.of(filePath));
     }
 }

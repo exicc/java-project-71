@@ -4,28 +4,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Files;
 import java.util.Map;
 
 public class Parser {
 
-    public static Map<String, Object> parseJson(String content) throws IOException {
+    private static Map<String, Object> parseJson(String content) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(content, new ObjectMapper()
                 .getTypeFactory()
                 .constructMapType(Map.class, String.class, Object.class));
     }
 
-    public static Map<String, Object> parseYaml(String content) throws Exception {
+    private static Map<String, Object> parseYaml(String content) throws Exception {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         return mapper.readValue(content, new ObjectMapper()
                 .getTypeFactory()
                 .constructMapType(Map.class, String.class, Object.class));
     }
 
-    public static String readFileContent(String filePath) throws IOException {
-        return Files.readString(Path.of(filePath));
-    }
+    public static Map<String, Object> parseFile(String content, String contentType) throws Exception {
 
+        if (contentType.equals("yml")) {
+            return parseYaml(content);
+        }
+        if (contentType.equals("json")) {
+            return parseJson(content);
+        }
+        throw new Exception("Unsupported content type");
+    }
 }
