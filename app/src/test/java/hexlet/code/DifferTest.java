@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DifferTest {
+public final class DifferTest {
 
     private static final String STYLISH_FORMAT = "stylish";
     private static final String PLAIN_FORMAT = "plain";
