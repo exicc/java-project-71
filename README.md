@@ -20,5 +20,16 @@ To find out the syntax of the application, you need to run it with the <u>__-h__
 ## Usage example
 ```sh
 make install
-./app/build/install/app/bin/app file1.json file2.json
 ```
+```sh
+./app/build/install/app/bin/app file1.json file2.json
+./app/build/install/app/bin/app file1.json file2.json -f plain
+./app/build/install/app/bin/app file1.json file2.json -f json
+```
+or
+```sh
+./app/build/install/app/bin/app file1.yaml file2.yaml
+./app/build/install/app/bin/app file1.yaml file2.yaml -f plain
+./app/build/install/app/bin/app file1.yaml file2.yaml -f json
+```
+***file1*** and ***file2*** are the files that need to be compared.
