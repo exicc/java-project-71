@@ -1,15 +1,12 @@
 package hexlet.code.formatters;
 
 import hexlet.code.ComparisonResult;
+import hexlet.code.Generator;
 
 import java.util.List;
 import java.util.Map;
 
 public class Plain {
-    static final String CHANGED = "CHANGED";
-    static final String UNCHANGED = "UNCHANGED";
-    static final String REMOVED = "DELETED";
-    static final String ADDED = "ADDED";
 
     public static String format(List<Map<String, Object>> diff) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -38,7 +35,7 @@ public class Plain {
                         : null;
 
                 switch (changeType) {
-                    case CHANGED -> stringBuilder.append(property)
+                    case Generator.CHANGED -> stringBuilder.append(property)
                             .append(addQuotes(key))
                             .append(wasUpdated)
                             .append("From ")
@@ -46,16 +43,16 @@ public class Plain {
                             .append(" to ")
                             .append(setComplexValue(newValue))
                             .append("\n");
-                    case ADDED -> stringBuilder.append(property)
+                    case Generator.ADDED -> stringBuilder.append(property)
                             .append(addQuotes(key))
                             .append(wasAdded)
                             .append(setComplexValue(oldValue))
                             .append("\n");
-                    case REMOVED -> stringBuilder.append(property)
+                    case Generator.REMOVED -> stringBuilder.append(property)
                             .append(addQuotes(key))
                             .append(wasRemoved)
                             .append("\n");
-                    case UNCHANGED -> {
+                    case Generator.UNCHANGED -> {
                     }
                     default -> throw new IllegalArgumentException("Invalid change type: "
                             + changeType);

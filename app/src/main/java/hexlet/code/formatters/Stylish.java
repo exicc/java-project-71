@@ -69,6 +69,7 @@ public class Stylish {
         }
         return "{\n" + stringBuilder + "}";
     }
+
     private static String replaceQuotes(Object value) {
 
         return value != null ? value

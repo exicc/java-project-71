@@ -1,23 +1,20 @@
 package hexlet.code.formatters;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Formatter {
 
-    public static String chooseFormatter(String formatName, List<Map<String, Object>> diff)
-            throws Exception {
+    public static String chooseFormatter(String formatName, List<Map<String, Object>> diff) throws Exception {
 
-        if (formatName.equalsIgnoreCase("stylish")) {
-            return Stylish.format(diff);
-        }
-        if (formatName.equalsIgnoreCase("plain")) {
-            return Plain.format(diff);
-        }
-        if (formatName.equalsIgnoreCase("json")) {
-            return Json.format(diff);
-        } else {
-            throw new Exception("Unsupported format: " + formatName);
-        }
+        String format = formatName.toUpperCase(Locale.getDefault());
+
+        return switch (format) {
+            case "STYLISH" -> Stylish.format(diff);
+            case "PLAIN" -> Plain.format(diff);
+            case "JSON" -> Json.format(diff);
+            default -> throw new Exception("Unsupported format: " + formatName);
+        };
     }
 }

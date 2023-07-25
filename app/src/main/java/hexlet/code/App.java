@@ -4,6 +4,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+
 import java.io.IOException;
 
 @SuppressWarnings("unused")
@@ -16,7 +17,7 @@ public class App implements Runnable {
     @Parameters(index = "1", description = "Path to second file")
     private String filePath2;
     @Option(names = {"-f", "--format"}, description = "Output format [default: stylish]", defaultValue = "stylish")
-    private  String formatName;
+    private String formatName;
     @Option(names = {"-h", "--help"}, description = "Show this help message and exit.", help = true)
     private boolean helpRequested;
     @Option(names = {"-V", "--version"}, description = "Print version information and exit.", versionHelp = true)

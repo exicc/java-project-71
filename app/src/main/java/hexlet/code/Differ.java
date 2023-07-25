@@ -13,8 +13,8 @@ public class Differ {
 
     public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
 
-        String contentType1 = getFileType(filePath1);
-        String contentType2 = getFileType(filePath2);
+        String contentType1 = getDataFormat(filePath1);
+        String contentType2 = getDataFormat(filePath2);
 
         String content1 = readContent(filePath1);
         String content2 = readContent(filePath2);
@@ -23,28 +23,26 @@ public class Differ {
         Map<String, Object> contentMap2;
 
         if (contentType1.equals(contentType2)) {
-            contentMap1 = Parser.parseFile(content1, contentType1);
-            contentMap2 = Parser.parseFile(content2, contentType2);
+            contentMap1 = Parser.parseContentByType(content1, contentType1);
+            contentMap2 = Parser.parseContentByType(content2, contentType2);
         } else {
-            throw new Exception("Comparison with different file extentions");
+            throw new Exception("Trying compare " + contentType1 + " with " + contentType2);
         }
 
         List<Map<String, Object>> diff = Generator.generateDiffList(contentMap1, contentMap2);
         return Formatter.chooseFormatter(formatName, diff);
     }
+
     public static String generate(String filePath1, String filePath2) throws Exception {
         String defaultFormatName = "stylish";
         return generate(filePath1, filePath2, defaultFormatName);
     }
 
-    private static String getFileType(String filePath) throws Exception {
-        if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
-            return "yml";
-        }
-        if (filePath.endsWith(".json")) {
-            return "json";
-        }
-        throw new Exception("Unsupported file format");
+    private static String getDataFormat(String filePath) {
+        int index = filePath.lastIndexOf('.');
+        return index > 0
+                ? filePath.substring(index + 1)
+                : "";
     }
 
     private static String readContent(String filePath) throws IOException {

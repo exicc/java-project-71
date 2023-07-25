@@ -22,7 +22,7 @@ public class Parser {
                 .constructMapType(Map.class, String.class, Object.class));
     }
 
-    public static Map<String, Object> parseFile(String content, String contentType) throws Exception {
+    public static Map<String, Object> parseContentByType(String content, String contentType) throws Exception {
 
         if (contentType.equals("yml")) {
             return parseYaml(content);

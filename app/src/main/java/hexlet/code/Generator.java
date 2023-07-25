@@ -9,10 +9,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Objects;
 
-public class Generator { static final String CHANGED = "CHANGED";
-    static final String UNCHANGED = "UNCHANGED";
-    static final String REMOVED = "DELETED";
-    static final String ADDED = "ADDED";
+public class Generator {
+    public static final String CHANGED = "CHANGED";
+    public static final String UNCHANGED = "UNCHANGED";
+    public static final String REMOVED = "DELETED";
+    public static final String ADDED = "ADDED";
 
     static List<Map<String, Object>> generateDiffList(Map<String, Object> map1, Map<String, Object> map2) {
 
