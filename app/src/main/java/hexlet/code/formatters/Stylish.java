@@ -1,18 +1,15 @@
 package hexlet.code.formatters;
 
 import hexlet.code.ComparisonResult;
+import hexlet.code.Generator;
 
 import java.util.List;
 import java.util.Map;
 
 
 public class Stylish {
-    static final String CHANGED = "CHANGED";
-    static final String UNCHANGED = "UNCHANGED";
-    static final String REMOVED = "DELETED";
-    static final String ADDED = "ADDED";
 
-    public static String format(List<Map<String, Object>> diff) throws Exception {
+    public static String format(List<Map<String, Object>> diff) {
         StringBuilder stringBuilder = new StringBuilder();
 
 
@@ -27,7 +24,9 @@ public class Stylish {
                 Object comparisonResultObj = entry.getValue();
 
                 if (!(comparisonResultObj instanceof ComparisonResult comparisonResult)) {
-                    throw new Exception("Invalid value type in the Map. Expected ComparisonResult.");
+                    throw new IllegalArgumentException("Invalid value type in the Map. "
+                            + "Expected ComparisonResult. Represented type: "
+                            + comparisonResultObj.getClass());
                 }
 
                 String key = comparisonResult.getKey();
@@ -37,30 +36,30 @@ public class Stylish {
                         : null;
 
                 switch (changeType) {
-                    case CHANGED -> stringBuilder.append(minus)
+                    case Generator.CHANGED -> stringBuilder.append(minus)
                             .append(key)
                             .append(": ")
-                            .append(replaceQuotes(oldValue))
+                            .append(oldValue)
                             .append("\n")
                             .append(plus)
                             .append(key)
                             .append(": ")
-                            .append(replaceQuotes(newValue))
+                            .append(newValue)
                             .append("\n");
-                    case ADDED -> stringBuilder.append(plus)
+                    case Generator.ADDED -> stringBuilder.append(plus)
                             .append(key)
                             .append(": ")
-                            .append(replaceQuotes(oldValue))
+                            .append(oldValue)
                             .append("\n");
-                    case REMOVED -> stringBuilder.append(minus)
+                    case Generator.REMOVED -> stringBuilder.append(minus)
                             .append(key)
                             .append(": ")
-                            .append(replaceQuotes(oldValue))
+                            .append(oldValue)
                             .append("\n");
-                    case UNCHANGED -> stringBuilder.append("    ")
+                    case Generator.UNCHANGED -> stringBuilder.append("    ")
                             .append(key)
                             .append(": ")
-                            .append(replaceQuotes(oldValue))
+                            .append(oldValue)
                             .append("\n");
                     default -> throw new IllegalArgumentException("Invalid change type: "
                             + changeType);
@@ -68,13 +67,5 @@ public class Stylish {
             }
         }
         return "{\n" + stringBuilder + "}";
-    }
-
-    private static String replaceQuotes(Object value) {
-
-        return value != null ? value
-                .toString()
-                .replaceAll("[\"']", "")
-                : null;
     }
 }

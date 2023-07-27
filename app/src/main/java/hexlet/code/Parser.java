@@ -24,12 +24,10 @@ public class Parser {
 
     public static Map<String, Object> parseContentByType(String content, String contentType) throws Exception {
 
-        if (contentType.equals("yml")) {
-            return parseYaml(content);
-        }
-        if (contentType.equals("json")) {
-            return parseJson(content);
-        }
-        throw new Exception("Unsupported content type");
+        return switch (contentType) {
+            case "yml" -> parseYaml(content);
+            case "json" -> parseJson(content);
+            default -> throw new Exception("Unsupported content type: " + contentType);
+        };
     }
 }

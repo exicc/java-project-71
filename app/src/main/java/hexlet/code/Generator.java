@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Generator {
     public static final String CHANGED = "CHANGED";
     public static final String UNCHANGED = "UNCHANGED";
-    public static final String REMOVED = "DELETED";
+    public static final String REMOVED = "REMOVED";
     public static final String ADDED = "ADDED";
 
     static List<Map<String, Object>> generateDiffList(Map<String, Object> map1, Map<String, Object> map2) {

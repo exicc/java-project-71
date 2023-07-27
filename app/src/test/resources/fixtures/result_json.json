@@ -26,7 +26,7 @@
     "oldValue" : 45
   }
 }, {
-  "DELETED" : {
+  "REMOVED" : {
     "key" : "key1",
     "oldValue" : "value1"
   }
@@ -47,7 +47,7 @@
     "newValue" : [ 22, 33, 44, 55 ]
   }
 }, {
-  "DELETED" : {
+  "REMOVED" : {
     "key" : "numbers3",
     "oldValue" : [ 3, 4, 5 ]
   }

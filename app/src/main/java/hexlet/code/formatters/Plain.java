@@ -25,7 +25,9 @@ public class Plain {
                 Object comparisonResultObj = entry.getValue();
 
                 if (!(comparisonResultObj instanceof ComparisonResult comparisonResult)) {
-                    throw new IllegalArgumentException("Invalid value type in the Map. Expected ComparisonResult.");
+                    throw new IllegalArgumentException("Invalid value type in the Map. "
+                            + "Expected ComparisonResult. Represented type: "
+                            + comparisonResultObj.getClass());
                 }
 
                 String key = comparisonResult.getKey();
