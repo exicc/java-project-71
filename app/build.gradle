@@ -63,3 +63,14 @@ jacocoTestReport {
 checkstyle {
     toolVersion '10.12.1'
 }
+
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes "Main-Class": "hexlet.code.App"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
